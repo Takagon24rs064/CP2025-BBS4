@@ -412,8 +412,6 @@ function login(email, password) {
 
 // 新規登録処理
 function register(name,email, password) {
-    
-
     if (!validateAuthInput(name,email, password, true)) return;
 
     const button = $('#registerButton');
@@ -500,6 +498,7 @@ $(function() {
     });
 
     $('#registerButton').on('click', () => {
+        const name = $('#loginName').val();
         const email = $('#loginEmail').val();
         const password = $('#loginPassword').val();
         register(email, password);
