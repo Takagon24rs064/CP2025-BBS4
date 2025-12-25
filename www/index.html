@@ -81,7 +81,12 @@ function validateContent(content) {
 }
 
 // 認証フォームのバリデーション
-function validateAuthInput(email, password, isRegister = false) {
+function validateAuthInput(name,email, password, isRegister = false) {
+    if(!name || !name.trim()){
+        showMessage('ユーザー名を入力してください','error');
+        return;
+    }
+
     if (!email || !email.trim()) {
         showMessage('メールアドレスを入力してください', 'error');
         return false;
@@ -407,6 +412,8 @@ function login(email, password) {
 
 // 新規登録処理
 function register(name,email, password) {
+    
+
     if (!validateAuthInput(name,email, password, true)) return;
 
     const button = $('#registerButton');
