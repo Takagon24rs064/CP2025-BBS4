@@ -97,6 +97,14 @@ function validateAuthInput(email, password, isRegister = false) {
     return true;
 }
 
+function validateUsername(username) {
+    if (!username || !username.trim()) {
+        showMessage('ユーザー名を入力してください', 'error');
+        return false;
+    }
+    return true;
+}
+
 // 投稿処理
 function createPost(author, content) {
     if (!currentUser) {
@@ -165,7 +173,7 @@ function createPostElement(post) {
     // 編集権限を確認
     const canEdit = canEditPost(post);
     // 編集権限があれば、編集・削除機能を表示
-    const actions = !canEdit ? `
+    const actions = canEdit ? `
         <div class="post-actions">
             <button class="btn-edit" onclick="startEdit('${post.id}')">
                 編集
@@ -448,7 +456,7 @@ function updateUI(user) {
     if (user) {
         $('.logged-in').show();
         $('.logged-out').hide();
-        $('#userEmail').text(user.uid);
+        $('#userEmail').text(user.email);
     } else {
         $('.logged-in').hide();
         $('.logged-out').show();
@@ -524,6 +532,11 @@ window.addEventListener('unload', () => {
 
         <!-- 認証フォーム（未ログイン時表示） -->
         <div class="auth-container logged-out">
+            <div class="form-group">
+            <label for="username">ユーザー名</label>
+           <input type="text" id="username"
+           class="form-control" placeholder="ユーザー名を入力">
+            </div>
             <div class="form-group">
                 <label for="loginEmail">メールアドレス</label>
                 <input type="email" id="loginEmail"
