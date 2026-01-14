@@ -119,7 +119,7 @@ function createPost(content) {
 
     // author はログインしているユーザのメールアドレスに変更、userId を追加
     const postData = {
-        author: currentuser.username,
+        author: currentUser.username,
         content: content,
         timestamp: firebase.database.ServerValue.TIMESTAMP,
         userId: currentUser.uid
@@ -461,11 +461,11 @@ function clearAuthForm() {
 
 // UI更新
 // 　バグ入りなので要修正（emailアドレスを表示するべきところを uid を表示してしまっている）
-function updateUI(user) {
-    if (user) {
+function updateUI(cuser) {
+    if (cuser) {
         $('.logged-in').show();
         $('.logged-out').hide();
-        $('#userEmail').text(user.username);
+        $('#userEmail').text(cuser.username);
     } else {
         $('.logged-in').hide();
         $('.logged-out').show();
@@ -509,7 +509,6 @@ $(function() {
     // 投稿処理
     $('#postButton').on('click', () => {
         // 投稿内容をフォームから取得
-        const authorVal = $('#authorInput').val();
         const contentVal = $('#contentInput').val();
         createPost(contentVal);
     });
@@ -524,7 +523,7 @@ $(function() {
         const username = $('#username').val();
         const email = $('#loginEmail').val();
         const password = $('#loginPassword').val();
-        register(email, password);
+        register(email, password,username);
     });
 
     $('#logoutButton').on('click', logout);
@@ -654,4 +653,4 @@ window.addEventListener('unload', () => {
 </body>
 </html>
 
-function createPost
+postData
