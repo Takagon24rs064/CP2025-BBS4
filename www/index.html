@@ -416,11 +416,20 @@ function login(email, password) {
 // 新規登録処理
 function register(email, password) {
     if (!validateAuthInput(email, password, true)) return;
+    if (!validateUsername(username)) return;
 
     const button = $('#registerButton');
     button.prop('disabled', true);
 
     firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then((result) => {
+        const user = result.user;
+
+        return firebase.database().ref('users/' + user.uid).set({
+            username: username,
+            email: email
+        });
+    })
     .then(() => {
         showMessage('アカウントを作成しました');
         clearAuthForm();
@@ -631,3 +640,5 @@ window.addEventListener('unload', () => {
     </div>
 </body>
 </html>
+
+register
