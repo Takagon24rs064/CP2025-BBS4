@@ -81,12 +81,7 @@ function validateContent(content) {
 }
 
 // 認証フォームのバリデーション
-function validateAuthInput(name,email, password, isRegister = false) {
-    if(!name || !name.trim()){
-        showMessage('ユーザー名を入力してください','error');
-        return false;
-    }
-
+function validateAuthInput(email, password, isRegister = false) {
     if (!email || !email.trim()) {
         showMessage('メールアドレスを入力してください', 'error');
         return false;
@@ -170,7 +165,7 @@ function createPostElement(post) {
     // 編集権限を確認
     const canEdit = canEditPost(post);
     // 編集権限があれば、編集・削除機能を表示
-    const actions = canEdit ? `
+    const actions = !canEdit ? `
         <div class="post-actions">
             <button class="btn-edit" onclick="startEdit('${post.id}')">
                 編集
@@ -411,8 +406,8 @@ function login(email, password) {
 }
 
 // 新規登録処理
-function register(name,email, password) {
-    if (!validateAuthInput(name,email, password, true)) return;
+function register(email, password) {
+    if (!validateAuthInput(email, password, true)) return;
 
     const button = $('#registerButton');
     button.prop('disabled', true);
@@ -443,7 +438,6 @@ function logout() {
 
 // 認証フォームのクリア
 function clearAuthForm() {
-    $('#loginname').val('');
     $('#loginEmail').val('');
     $('#loginPassword').val('');
 }
@@ -454,7 +448,7 @@ function updateUI(user) {
     if (user) {
         $('.logged-in').show();
         $('.logged-out').hide();
-        $('#userEmail').text(user.email);
+        $('#userEmail').text(user.uid);
     } else {
         $('.logged-in').hide();
         $('.logged-out').show();
@@ -494,11 +488,10 @@ $(function() {
     $('#loginButton').on('click', () => {
         const email = $('#loginEmail').val();
         const password = $('#loginPassword').val();
-        login(email,password);
+        login(email, password);
     });
 
     $('#registerButton').on('click', () => {
-        const name = $('#loginName').val();
         const email = $('#loginEmail').val();
         const password = $('#loginPassword').val();
         register(email, password);
@@ -531,13 +524,6 @@ window.addEventListener('unload', () => {
 
         <!-- 認証フォーム（未ログイン時表示） -->
         <div class="auth-container logged-out">
-            
-            <div class="form-group">
-                <label for="loginName">ユーザーネーム</label>
-                <input type="name" id="loginName"
-                       class="form-control" placeholder="お名前を入力して下さい">
-            </div>
-
             <div class="form-group">
                 <label for="loginEmail">メールアドレス</label>
                 <input type="email" id="loginEmail"
