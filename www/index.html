@@ -84,7 +84,7 @@ function validateContent(content) {
 function validateAuthInput(name,email, password, isRegister = false) {
     if(!name || !name.trim()){
         showMessage('ユーザー名を入力してください','error');
-        return;
+        return false;
     }
 
     if (!email || !email.trim()) {
@@ -417,7 +417,7 @@ function register(name,email, password) {
     const button = $('#registerButton');
     button.prop('disabled', true);
 
-    firebase.auth().createUserWithEmailAndPassword(name,email, password)
+    firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(() => {
         showMessage('アカウントを作成しました');
         clearAuthForm();
